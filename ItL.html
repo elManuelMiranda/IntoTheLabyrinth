@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <canvas id="mycanvas" width="1000" height="800">
+    <canvas id="mycanvas" width="1500" height="800">
         Tu navegador no soporta canvas
     </canvas>
 
@@ -35,23 +35,23 @@
         var pared = null;
 
         var gameMap = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
-            0, 1, 0, 0, 0, 1, 0, 0, 0, 0,
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-            0, 1, 0, 1, 0, 0, 0, 1, 1, 0,
-            0, 1, 0, 1, 0, 1, 0, 0, 1, 0,
-            0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-            0, 1, 0, 0, 0, 0, 0, 1, 0, 0,
-            0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1,
         ]
 
-        var collBox = [];
+        var collBox = new Array();
 
-        var mapW = 10, mapH = 10;
+        var mapW = 20, mapH = 10;
         var wallW = 40, wallH = 40;
-        var super_x = 250, super_y = 250;
+        var super_x = 41, super_y = 0;
 
         var direction = 'right';
         var score = 0;
@@ -66,7 +66,8 @@
         var wall = new Image();
 
         var bgMusic = new Audio();
-        var sonido1 = new Audio();
+        var gotEmerald = new Audio();
+        var stageClear = new Audio();
         var drowning = new Audio();
 
         var pause = false;
@@ -88,8 +89,9 @@
             wall.src = './img/Wall.png';
 
             bgMusic.src = './fx/PressGarden2.mp3';
+            gotEmerald.src = './fx/ChaosEmerald.mp3';
+            stageClear.src = './fx/StageClear.mp3';
             drowning.src = './fx/Drowning.mp3';
-            sonido1.src = './fx/ChaosEmerald.mp3';
 
             paint();
 
@@ -97,7 +99,7 @@
 
         function paint() {
 
-            window.requestAnimationFrame(paint)
+            window.requestAnimationFrame(paint);
 
             // background
             const ptrn = ctx.createPattern(background, 'repeat');
@@ -126,19 +128,25 @@
             );
 
             //player2.dibujar(ctx);
-            ctx.drawImage(emerald, player2.x, player2.y);
+            // ctx.drawImage(emerald, player2.x, player2.y);
 
             //pared.dibujar(ctx);
             // ctx.drawImage(wall, pared.x, pared.y, 50, 50);
 
             for (var y = 0; y < mapH; y++) {
-                collBox.push([]);
                 for (var x = 0; x < mapW; x++) {
                     switch (gameMap[((y * mapW) + x)]) {
+
+                        case -1:
+                            ctx.beginPath();
+                            player2 = new Cuadrado(x * wallW, y * wallH, 40, 40, 'yellow');
+                            ctx.drawImage(emerald, x * wallW, y * wallH, wallW, wallH);
+
                         case 0:
                             ctx.beginPath();
-                            
+                            pared = new Cuadrado(x * wallW, y * wallH, wallW, wallH);
                             ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
+                            collBox.push(pared);
                             break;
                         default:
                             ctx.fillStyle = "#eeeeee"
@@ -273,37 +281,62 @@
 
             if (player1.se_tocan(player2)) {
 
-                player2.x = generateRandomInteger(1000);
-                player2.y = generateRandomInteger(800);
+                allClear();
+                // player2.x = generateRandomInteger(1000);
+                // player2.y = generateRandomInteger(800);
 
                 score += 10;
-
-                sonido1.play();
             }
 
-            if (player1.se_tocan(pared)) {
-                if (direction == 'right') {
-                    player1.x -= speed;
-                }
+            for (var i = 0; i < collBox.length; i++) {
+                if (player1.se_tocan(collBox[i])) {
+                    if (direction == 'right') {
+                        player1.x -= speed;
+                    }
 
-                if (direction == 'left') {
-                    player1.x += speed;
-                }
+                    if (direction == 'left') {
+                        player1.x += speed;
+                    }
 
-                if (direction == 'down') {
-                    player1.y -= speed;
-                }
+                    if (direction == 'down') {
+                        player1.y -= speed;
+                    }
 
-                if (direction == 'up') {
-                    player1.y += speed;
+                    if (direction == 'up') {
+                        player1.y += speed;
+                    }
                 }
             }
 
-            if (score > 30) {
-                gameOver();
-            }
+            // if (player1.se_tocan(pared)) {
+            //     if (direction == 'right') {
+            //         player1.x -= speed;
+            //     }
+
+            //     if (direction == 'left') {
+            //         player1.x += speed;
+            //     }
+
+            //     if (direction == 'down') {
+            //         player1.y -= speed;
+            //     }
+
+            //     if (direction == 'up') {
+            //         player1.y += speed;
+            //     }
+            // }
+
+            // if (score > 30) {
+            //     gameOver();
+            // }
 
             // bgMusic.play();
+        }
+
+        function allClear() {
+            stageClear.play();
+            pause = (pause) ? false : true;
+            gotEmerald.play();
         }
 
         function gameOver() {
