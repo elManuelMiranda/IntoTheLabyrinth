@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <canvas id="mycanvas" width="1500" height="800">
+    <canvas id="mycanvas" width="1000" height="800">
         Tu navegador no soporta canvas
     </canvas>
 
@@ -35,27 +35,42 @@
         var pared = null;
 
         var gameMap = [
-            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1,
+            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0,
+            0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0,
+            0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0,
+            0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0,
+            0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0,
+            0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0,
+            0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0,
+            0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0,
+            0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0,
+            0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0,
+            0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0,
+            0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0,
+            0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0,
+            0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0,
+            0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0,
+            0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0,
+            0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0,
+            0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0,
+            0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0,
+            0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+            0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+            0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         ]
 
         var collBox = new Array();
 
-        var mapW = 20, mapH = 10;
-        var wallW = 40, wallH = 40;
-        var super_x = 41, super_y = 0;
+        var mapW = 30, mapH = 25;
+        var wallW = 30, wallH = 30;
+        var super_x = 31, super_y = 0;
 
         var direction = 'right';
         var score = 0;
-        var speed = 5;
+        var speed = 3;
 
         var background = new Image();
 
@@ -76,19 +91,19 @@
             cv = document.getElementById('mycanvas');
             ctx = cv.getContext('2d');
 
-            player1 = new Cuadrado(super_x, super_y, 30, 30);
+            player1 = new Cuadrado(super_x, super_y, 29, 29);
 
-            player2 = new Cuadrado(generateRandomInteger(500), generateRandomInteger(500), 40, 40, 'yellow');
+            player2 = new Cuadrado(900, 690, 20, 20);
 
             // pared = new Cuadrado(100, 100, 50, 50);
 
             background.src = './img/Labyrinth.png'
 
             sonic.src = './img/mario.png';
-            emerald.src = './img/emerald.png';
+            emerald.src = './img/PhantomRuby.png';
             wall.src = './img/Wall.png';
 
-            bgMusic.src = './fx/PressGarden2.mp3';
+            bgMusic.src = './fx/Labyrinth.mp3';
             gotEmerald.src = './fx/ChaosEmerald.mp3';
             stageClear.src = './fx/StageClear.mp3';
             drowning.src = './fx/Drowning.mp3';
@@ -105,10 +120,6 @@
             const ptrn = ctx.createPattern(background, 'repeat');
             ctx.fillStyle = ptrn;
             ctx.fillRect(0, 0, cv.width, cv.height);
-            // ctx.drawImage(background, 0, 0);
-
-            // ctx.fillStyle = "pink";
-            // ctx.fillRect(0, 0, 1000, 1000);
 
             player1.c = "black";
 
@@ -127,8 +138,8 @@
                 sonic_h // dHeight
             );
 
-            //player2.dibujar(ctx);
-            // ctx.drawImage(emerald, player2.x, player2.y);
+            player2.dibujar(ctx);
+            ctx.drawImage(emerald, player2.x, player2.y);
 
             //pared.dibujar(ctx);
             // ctx.drawImage(wall, pared.x, pared.y, 50, 50);
@@ -139,22 +150,18 @@
 
                         case -1:
                             ctx.beginPath();
-                            player2 = new Cuadrado(x * wallW, y * wallH, 40, 40, 'yellow');
+                            player2 = new Cuadrado(x * wallW, y * wallH, 20, 20, 'yellow');
                             ctx.drawImage(emerald, x * wallW, y * wallH, wallW, wallH);
 
                         case 0:
                             ctx.beginPath();
                             pared = new Cuadrado(x * wallW, y * wallH, wallW, wallH);
-                            ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
                             collBox.push(pared);
+                            ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
                             break;
                         default:
                             ctx.fillStyle = "#eeeeee"
                     }
-                    // collBox[y].push({i : x*40, j: y*40, status: case )});
-                    // collBox[y].push(pared = new Cuadrado(x * wallW, y * wallH, wallW, wallH));
-                    // ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
-                    // ctx.fillRect();
                 }
             }
 
@@ -171,6 +178,18 @@
 
                 ctx.fillStyle = "white";
                 ctx.fillText('P A U S E', 450, 450);
+            } else {
+                update();
+            }
+
+            if (cleared) {
+                bgMusic.pause();
+
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
+                ctx.fillRect(0, 0, 1000, 800);
+
+                ctx.fillStyle = "white";
+                ctx.fillText('YOU ARE TOO COOL', 450, 450);
             } else {
                 update();
             }
@@ -308,29 +327,7 @@
                 }
             }
 
-            // if (player1.se_tocan(pared)) {
-            //     if (direction == 'right') {
-            //         player1.x -= speed;
-            //     }
-
-            //     if (direction == 'left') {
-            //         player1.x += speed;
-            //     }
-
-            //     if (direction == 'down') {
-            //         player1.y -= speed;
-            //     }
-
-            //     if (direction == 'up') {
-            //         player1.y += speed;
-            //     }
-            // }
-
-            // if (score > 30) {
-            //     gameOver();
-            // }
-
-            // bgMusic.play();
+            bgMusic.play();
         }
 
         function allClear() {
@@ -374,13 +371,13 @@
             //izquierda
             if (e.which == 65) {
                 direction = 'left';
-                spriteLeft();
+                // spriteLeft();
             }
 
             //derecha
             if (e.which == 68) {
                 direction = 'right';
-                spriteRight();
+                // spriteRight();
             }
 
             //pause
