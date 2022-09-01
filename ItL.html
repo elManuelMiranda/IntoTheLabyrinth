@@ -34,6 +34,23 @@
         var player2 = null;
         var pared = null;
 
+        var gameMap = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+            0, 1, 0, 0, 0, 1, 0, 0, 0, 0,
+            0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+            0, 1, 0, 1, 0, 0, 0, 1, 1, 0,
+            0, 1, 0, 1, 0, 1, 0, 0, 1, 0,
+            0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+            0, 1, 0, 0, 0, 0, 0, 1, 0, 0,
+            0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+
+        var collBox = [];
+
+        var mapW = 10, mapH = 10;
+        var wallW = 40, wallH = 40;
         var super_x = 250, super_y = 250;
 
         var direction = 'right';
@@ -62,7 +79,7 @@
 
             player2 = new Cuadrado(generateRandomInteger(500), generateRandomInteger(500), 40, 40, 'yellow');
 
-            pared = new Cuadrado(100, 100, 50, 50);
+            // pared = new Cuadrado(100, 100, 50, 50);
 
             background.src = './img/Labyrinth.png'
 
@@ -91,9 +108,6 @@
             // ctx.fillStyle = "pink";
             // ctx.fillRect(0, 0, 1000, 1000);
 
-            ctx.fillStyle = "black";
-            ctx.fillText('SCORE:' + score + '  SPEED:' + speed, 30, 20);
-
             player1.c = "black";
 
             //player1.dibujar(ctx);
@@ -115,7 +129,31 @@
             ctx.drawImage(emerald, player2.x, player2.y);
 
             //pared.dibujar(ctx);
-            ctx.drawImage(wall, pared.x, pared.y, 50, 50);
+            // ctx.drawImage(wall, pared.x, pared.y, 50, 50);
+
+            for (var y = 0; y < mapH; y++) {
+                collBox.push([]);
+                for (var x = 0; x < mapW; x++) {
+                    switch (gameMap[((y * mapW) + x)]) {
+                        case 0:
+                            ctx.beginPath();
+                            
+                            ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
+                            break;
+                        default:
+                            ctx.fillStyle = "#eeeeee"
+                    }
+                    // collBox[y].push({i : x*40, j: y*40, status: case )});
+                    // collBox[y].push(pared = new Cuadrado(x * wallW, y * wallH, wallW, wallH));
+                    // ctx.drawImage(wall, x * wallW, y * wallH, wallW, wallH);
+                    // ctx.fillRect();
+                }
+            }
+
+            ctx.fillStyle = "#ff0000";
+
+            ctx.fillStyle = "white";
+            ctx.fillText('SCORE:' + score + '  SPEED:' + speed, 30, 20);
 
             if (pause) {
                 bgMusic.pause();
@@ -128,8 +166,6 @@
             } else {
                 update();
             }
-
-
         }
 
         let numRows = 5;
@@ -329,7 +365,7 @@
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 function (callback) {
-                    window.setTimeout(callback, 17);
+                    window.setTimeout(callback, 8);
                 };
         }());
 
